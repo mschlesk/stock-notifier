@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: latest
+  build:
+    commands:
+      - echo $CODEBUILD_SRC_DIR
+      - echo Build started on `date`
+      - make install
+  post_build:
+    commands:
+      - make package
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - function.zip
