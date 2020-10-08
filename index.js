@@ -5,13 +5,13 @@ const targetUrl = "https://store.google.com/us/config/pixel_5";
 let browser, page;
 
 exports.handler = async (event, context) => {
-  const puppeteer = chromium.puppeteer;
+console.log(`chromium.headless: ${chromium.headless}`);
 
-  initializePage();
+  await initializePage();
 
   const screenshot = await checkStock();
 
-  browser.close();
+  await browser.close();
 
   return {
     statusCode: 200,
@@ -22,14 +22,13 @@ exports.handler = async (event, context) => {
 };
 
 const initializePage = async () => {
-  browser = await puppeteer.launch({
+  browser = await chromium.puppeteer.launch({
     executablePath: await chromium.executablePath,
     args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    headless: chromium.headless,
+    headless: true,
   });
 
-  page = browser.newPage();
+  page = await browser.newPage();
 };
 
 const checkStock = async () => {
