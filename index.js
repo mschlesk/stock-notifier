@@ -5,8 +5,6 @@ const targetUrl = "https://store.google.com/us/config/pixel_5";
 let browser, page;
 
 exports.handler = async (event, context) => {
-console.log(`chromium.headless: ${chromium.headless}`);
-
   await initializePage();
 
   const screenshot = await checkStock();
@@ -32,9 +30,12 @@ const initializePage = async () => {
 };
 
 const checkStock = async () => {
-  await page.goto(targetUrl);
+  await page.goto(targetUrl, { waitUntil: "networkidle2" });
 
-  const screenshot = await page.screenshot({ encoding: "binary" });
+  const screenshot = await page.screenshot({
+    encoding: "binary",
+    fullPage: true,
+  });
 
   return screenshot;
 };
