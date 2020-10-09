@@ -12,7 +12,7 @@ const targetUrl = "https://store.google.com/us/config/pixel_5",
 
 let browser, page;
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   let err,
     inStock,
     statusCode = 200;
@@ -26,6 +26,7 @@ exports.handler = async (event, context) => {
     err = e;
     statusCode = 500;
   } finally {
+    await page.close();
     await browser.close();
   }
 
@@ -113,6 +114,7 @@ const checkStock = async () => {
     }));
 
   const inStock = await !targetModel.$(modelStockSelector);
+  await targetModel.dispose();
 
   if (inStock) console.log("Target model is in stock!");
 
