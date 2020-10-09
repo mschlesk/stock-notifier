@@ -30,9 +30,10 @@ exports.handler = async (event, context) => {
   }
 
   return {
-    statusCode: 200,
+    statusCode,
     body: JSON.stringify({
       inStock,
+      err,
     }),
   };
 };
