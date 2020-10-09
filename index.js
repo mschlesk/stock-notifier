@@ -10,9 +10,11 @@ const targetUrl = "https://store.google.com/us/config/pixel_5",
   targetModelName = "Sorta Sage",
   modelStockSelector = "div.mqn-lobby-swatch__card__availability--out-of-stock";
 
-let browser, page;
+let browser, page, isAWS;
 
 exports.handler = async (event) => {
+  isAWS = !!event;
+
   let err,
     inStock,
     statusCode = 200;
@@ -61,7 +63,7 @@ const checkStock = async () => {
       `Failed to find carrier card using selector ${carrierCardSelector}`
     );
 
-  DEBUG &&
+  isAWS &&
     (await targetElement.screenshot({
       path: "screenshots/1-carrierCard.png",
     }));
@@ -78,7 +80,7 @@ const checkStock = async () => {
   await page.waitForSelector(modelCardSelector);
   await targetElement.dispose();
 
-  DEBUG &&
+  isAWS &&
     (await page.screenshot({
       path: "screenshots/2-modelsPage.png",
       fullPage: true,
@@ -108,7 +110,7 @@ const checkStock = async () => {
       `Failed to find model matching model name ${targetModelName}`
     );
 
-  DEBUG &&
+  isAWS &&
     (await targetModel.screenshot({
       path: "screenshots/3-modelCard.png",
     }));
