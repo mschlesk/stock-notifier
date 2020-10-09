@@ -97,18 +97,17 @@ const checkStock = async () => {
     );
 
   // Filter down to "Sorta Sage" model card
-  const targetModel = await models.reduce(async (acc, model) => {
-    if (!!acc) return acc;
+  for (const model of models) {
     const modelName = await model.$eval(
       config.selectors.modelNameSelector,
       (node) => node.innerText
     );
-    console.log(modelName);
-    const retVal =
-      !!modelName && modelName.includes(config.targetModelName) ? model : null;
-    console.log(`returning retVal: ${retVal}`);
-    return retVal;
-  }, null);
+    console.log(`Found model "${modelName}"`);
+    if (!!modelName && modelName.includes(config.targetModelName)) {
+      targetModel = model;
+      break;
+    }
+  }
 
   if (!targetModel)
     throw new Error(
