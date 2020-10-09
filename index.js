@@ -104,9 +104,10 @@ const checkStock = async () => {
       (node) => node.innerText
     );
     console.log(modelName);
-    return !!modelName && modelName.includes(config.targetModelName)
-      ? model
-      : null;
+    const retVal =
+      !!modelName && modelName.includes(config.targetModelName) ? model : null;
+    console.log(`returning retVal: ${retVal}`);
+    return retVal;
   }, null);
 
   if (!targetModel)
